@@ -4,11 +4,18 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 
 import com.example.amitrai.demomusicplayer.R;
+import com.example.amitrai.demomusicplayer.util.Utils;
+
+import butterknife.Bind;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -23,10 +30,19 @@ public class LoginFragment extends BaseFragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+    private final String TAG = getClass().getSimpleName();
 
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+
+    @Bind(R.id.edt_email)
+    EditText edt_email;
+    @Bind(R.id.edt_password)
+    EditText edt_password;
+
+
+
 
 
     public LoginFragment() {
@@ -64,7 +80,9 @@ public class LoginFragment extends BaseFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_login, container, false);
+        View view = inflater.inflate(R.layout.fragment_login, container, false);
+        ButterKnife.bind(this, view);
+        return view;
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -79,6 +97,7 @@ public class LoginFragment extends BaseFragment {
     @Override
     public void onDetach() {
         super.onDetach();
+        ButterKnife.unbind(this);
     }
 
     /**
@@ -94,5 +113,24 @@ public class LoginFragment extends BaseFragment {
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
+    }
+
+    @OnClick(R.id.btn_login)
+    void login(){
+        String email = edt_email.getText().toString();
+        String password = edt_password.getText().toString();
+        if (!email.isEmpty() && !password.isEmpty()){
+            if (Utils.isValidEmail(email))
+                Log.e(TAG, "valid email");
+            else
+                Log.e(TAG, "invalid email");
+        }else
+            Log.e(TAG, "email or password can not be left blank");
+    }
+
+    @OnClick(R.id.btn_register)
+    void registerUser(){
+        Log.e(TAG, "register user");
+
     }
 }

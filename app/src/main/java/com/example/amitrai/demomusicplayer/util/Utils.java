@@ -20,6 +20,7 @@ import android.os.Environment;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.telephony.TelephonyManager;
+import android.text.TextUtils;
 import android.widget.Toast;
 
 import java.io.File;
@@ -407,5 +408,8 @@ public class Utils {
         }
     }
 
+
+    public static boolean isValidEmail(CharSequence target) {
+        return !TextUtils.isEmpty(target) && android.util.Patterns.EMAIL_ADDRESS.matcher(target).matches();}
 
 }

@@ -10,7 +10,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.example.amitrai.demomusicplayer.R;
-import com.example.amitrai.demomusicplayer.ui.fragment.HomeFragment;
+import com.example.amitrai.demomusicplayer.ui.fragment.LoginFragment;
 
 public class HomeActivity extends BaseActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -94,7 +94,7 @@ public class HomeActivity extends BaseActivity
 
     private void init(){
 //        try {
-            openFragment(new HomeFragment(), false);
+            openFragment(new LoginFragment(), false);
 //            ApiRequester.callApi();
 //        } catch (IOException e) {
 //            e.printStackTrace();
