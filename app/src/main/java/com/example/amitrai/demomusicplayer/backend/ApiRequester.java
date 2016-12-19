@@ -1,11 +1,15 @@
 package com.example.amitrai.demomusicplayer.backend;
 
+import android.util.Log;
+
 import com.example.amitrai.demomusicplayer.modals.Repo;
 
 import java.io.IOException;
 import java.util.List;
 
 import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.http.GET;
 import retrofit2.http.Path;
@@ -15,6 +19,8 @@ import retrofit2.http.Path;
  */
 
 public class ApiRequester {
+
+    private static final String TAG = ApiRequester.class.getSimpleName();
 
     public interface GitHubService {
         @GET("users/{user}/repos")
@@ -46,12 +52,27 @@ public class ApiRequester {
                 .baseUrl("https://api.github.com/")
                 .build();
 
+
         GitHubService service = retrofit.create(GitHubService.class);
 
-        try {
-            Call<List<Repo>> repos = service.listRepos("amitrai98");
-        }catch (Exception ex){
-            ex.printStackTrace();
-        }
+        ApiInterface apiService =
+                ApiClient.getClient().create(ApiInterface.class);
+
+        Call<Object> call = apiService.listRepos("amitrai98");
+        call.enqueue(new Callback<Object>() {
+            @Override
+            public void onResponse(Call<Object> call, Response<Object> response) {
+                Object body = response.body();
+                Log.e(TAG, "response"+body);
+
+            }
+
+            @Override
+            public void onFailure(Call<Object> call, Throwable t) {
+                Log.e(TAG, "response"+t);
+            }
+        });
+
+
     }
 }

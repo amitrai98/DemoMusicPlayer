@@ -2,6 +2,8 @@ package com.example.amitrai.demomusicplayer.ui.activity;
 
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -93,6 +95,24 @@ public abstract class BaseActivity extends AppCompatActivity
      * opens a new fragment.
      */
     public void openFragment(BaseFragment fragment, boolean addToBackStack){
+        String backStateName = fragment.getClass().getName();
 
+        FragmentManager manager = getSupportFragmentManager();
+        boolean fragmentPopped = manager.popBackStackImmediate (backStateName, 0);
+
+        if (!fragmentPopped){ //fragment not in back stack, create it.
+            FragmentTransaction ft = manager.beginTransaction();
+            ft.replace(R.id.content_frame, fragment);
+
+            if (addToBackStack)
+                ft.addToBackStack(backStateName);
+
+            ft.commit();
+        }
     }
+
+
+//    private void replaceFragment (Fragment fragment){
+//
+//    }
 }

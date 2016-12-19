@@ -10,11 +10,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.example.amitrai.demomusicplayer.R;
-import com.example.amitrai.demomusicplayer.backend.ApiRequester;
+import com.example.amitrai.demomusicplayer.ui.fragment.HomeFragment;
 
-import java.io.IOException;
-
-public class Home extends BaseActivity
+public class HomeActivity extends BaseActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     @Override
@@ -95,10 +93,11 @@ public class Home extends BaseActivity
 
 
     private void init(){
-        try {
-            ApiRequester.callApi();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+//        try {
+            openFragment(new HomeFragment(), false);
+//            ApiRequester.callApi();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
     }
 }
