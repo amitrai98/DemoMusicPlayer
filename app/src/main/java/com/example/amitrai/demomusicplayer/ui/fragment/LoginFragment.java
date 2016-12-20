@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 
 import com.example.amitrai.demomusicplayer.R;
+import com.example.amitrai.demomusicplayer.backend.RxJavaHandler;
 import com.example.amitrai.demomusicplayer.util.Utils;
 
 import butterknife.Bind;
@@ -95,6 +96,16 @@ public class LoginFragment extends BaseFragment {
     }
 
     @Override
+    protected void initViews(View view) {
+
+    }
+
+    @Override
+    protected void initListeners() {
+
+    }
+
+    @Override
     public void onDetach() {
         super.onDetach();
         ButterKnife.unbind(this);
@@ -120,8 +131,10 @@ public class LoginFragment extends BaseFragment {
         String email = edt_email.getText().toString();
         String password = edt_password.getText().toString();
         if (!email.isEmpty() && !password.isEmpty()){
-            if (Utils.isValidEmail(email))
-                Log.e(TAG, "valid email");
+            if (Utils.isValidEmail(email)){
+                RxJavaHandler handler = new RxJavaHandler();
+                handler.callApi();
+            }
             else
                 Log.e(TAG, "invalid email");
         }else
@@ -130,7 +143,7 @@ public class LoginFragment extends BaseFragment {
 
     @OnClick(R.id.btn_register)
     void registerUser(){
-        Log.e(TAG, "register user");
+        replaceFragment(new RegisterFragment(), true);
 
     }
 }

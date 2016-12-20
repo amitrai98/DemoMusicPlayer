@@ -94,7 +94,7 @@ public class HomeActivity extends BaseActivity
 
     private void init(){
 //        try {
-            openFragment(new LoginFragment(), false);
+            replaceFragment(new LoginFragment(), true);
 //            ApiRequester.callApi();
 //        } catch (IOException e) {
 //            e.printStackTrace();

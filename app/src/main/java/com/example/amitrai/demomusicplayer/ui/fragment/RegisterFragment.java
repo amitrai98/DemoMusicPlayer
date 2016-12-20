@@ -10,6 +10,9 @@ import android.view.ViewGroup;
 
 import com.example.amitrai.demomusicplayer.R;
 
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
@@ -57,13 +60,18 @@ public class RegisterFragment extends BaseFragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+
+
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_register, container, false);
+         View view = inflater.inflate(R.layout.fragment_register, container, false);
+        ButterKnife.bind(this, view);
+
+        return view;
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -79,6 +87,16 @@ public class RegisterFragment extends BaseFragment {
 //            throw new RuntimeException(context.toString()
 //                    + " must implement OnFragmentInteractionListener");
 //        }
+    }
+
+    @Override
+    protected void initViews(View view) {
+
+    }
+
+    @Override
+    protected void initListeners() {
+
     }
 
     @Override
@@ -99,5 +117,10 @@ public class RegisterFragment extends BaseFragment {
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
+    }
+
+    @OnClick(R.id.btn_login)
+    void openLoginFragment(){
+        replaceFragment(new LoginFragment(), true);
     }
 }

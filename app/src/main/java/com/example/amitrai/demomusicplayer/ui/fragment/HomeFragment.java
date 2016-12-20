@@ -107,6 +107,16 @@ public class HomeFragment extends BaseFragment {
     }
 
     @Override
+    protected void initViews(View view) {
+
+    }
+
+    @Override
+    protected void initListeners() {
+
+    }
+
+    @Override
     public void onDetach() {
         super.onDetach();
         ButterKnife.unbind(this);

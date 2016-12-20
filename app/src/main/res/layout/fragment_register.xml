@@ -46,10 +46,11 @@
                     android:layout_height="wrap_content"
                     android:text="@string/register"/>
                 <Button
+                    android:id="@+id/btn_login"
                     android:layout_marginTop="5dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/cancel"/>
+                    android:text="@string/login"/>
 
             </LinearLayout>
         </android.support.v7.widget.CardView>
