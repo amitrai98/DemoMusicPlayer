@@ -47,7 +47,7 @@ public class ApiRequester {
                 @Path("repo") String repo);
     }
 
-    public static void callApi() throws IOException {
+    public static void request(RequestModal requestModal) throws IOException {
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("https://api.github.com/")
                 .build();

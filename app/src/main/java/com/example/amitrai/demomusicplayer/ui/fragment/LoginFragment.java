@@ -11,7 +11,6 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 
 import com.example.amitrai.demomusicplayer.R;
-import com.example.amitrai.demomusicplayer.backend.RxJavaHandler;
 import com.example.amitrai.demomusicplayer.util.Utils;
 
 import butterknife.Bind;
@@ -132,8 +131,9 @@ public class LoginFragment extends BaseFragment {
         String password = edt_password.getText().toString();
         if (!email.isEmpty() && !password.isEmpty()){
             if (Utils.isValidEmail(email)){
-                RxJavaHandler handler = new RxJavaHandler();
-                handler.callApi();
+//                RxJavaHandler handler = new RxJavaHandler();
+//                handler.callApi();
+
             }
             else
                 Log.e(TAG, "invalid email");

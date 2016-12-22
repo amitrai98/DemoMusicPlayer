@@ -16,21 +16,38 @@ import io.reactivex.schedulers.Schedulers;
 public class RxJavaHandler {
     private CompositeDisposable _disposables;
     private String TAG = getClass().getSimpleName();
+    int i = 0;
 
 
     public void callApi(){
-        Observable.just("one", "two", "three", "four", "five")
-                .subscribeOn(Schedulers.newThread())
+
+        Observable.just(1)
+                .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<String>() {
+                .subscribe(new Observer<Integer>() {
                     @Override
                     public void onSubscribe(Disposable d) {
                         Log.e(TAG, "got call subscribe");
                     }
 
                     @Override
-                    public void onNext(String value) {
-                        Log.e(TAG, "got call next");
+                    public void onNext(Integer value) {
+                        try {
+                            ApiRequester.request(new RequestModal(RequestType.GET,
+                                    ApiName.REGISTER, null, new ResponseListeners() {
+                                @Override
+                                public void onResponseReceived() {
+
+                                }
+
+                                @Override
+                                public void onResponseError() {
+
+                                }
+                            }));
+                        }catch (Exception exp){
+                            exp.printStackTrace();
+                        }
                     }
 
                     @Override
