@@ -33,18 +33,18 @@ public class RxJavaHandler {
                     @Override
                     public void onNext(Integer value) {
                         try {
-                            ApiRequester.request(new RequestModal(RequestType.GET,
-                                    ApiName.REGISTER, null, new ResponseListeners() {
-                                @Override
-                                public void onResponseReceived() {
-
-                                }
-
-                                @Override
-                                public void onResponseError() {
-
-                                }
-                            }));
+//                            ApiRequester.request(new RequestModal(RequestType.GET,
+//                                    ApiName.REGISTER, null, new ResponseListeners() {
+//                                @Override
+//                                public void onResponseReceived() {
+//
+//                                }
+//
+//                                @Override
+//                                public void onResponseError() {
+//
+//                                }
+//                            }));
                         }catch (Exception exp){
                             exp.printStackTrace();
                         }

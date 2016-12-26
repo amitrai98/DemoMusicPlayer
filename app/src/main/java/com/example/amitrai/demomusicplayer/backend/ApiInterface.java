@@ -1,7 +1,13 @@
 package com.example.amitrai.demomusicplayer.backend;
 
+import android.support.annotation.NonNull;
+
+import okhttp3.ResponseBody;
 import retrofit2.Call;
+import retrofit2.http.Field;
+import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
+import retrofit2.http.POST;
 import retrofit2.http.Path;
 
 /**
@@ -14,29 +20,18 @@ public interface ApiInterface {
 //    Call<Repo> getTopRatedMovies();
 
     @GET("users/{user}/repos")
-    Call<Object> listRepos(@Path("user") String user);
+    Call<Object> listRepos(@Path("user") @NonNull String user);
 
-//    @GET("users/{user}/repos")
-//    Call<Object> listRepos(@Path("user") String user);
-//
-//    @GET("users/{user}/repos")
-//    Call<Object> listRepos(@Path("user") String user);
-//
-//    @GET("users/{user}/repos")
-//    Call<Object> listRepos(@Path("user") String user);
-//
-//    @GET("users/{user}/repos")
-//    Call<Object> listRepos(@Path("user") String user);
-//
-//    @GET("users/{user}/repos")
-//    Call<Object> listRepos(@Path("user") String user);
-//
-//    @GET("users/{user}/repos")
-//    Call<Object> listRepos(@Path("user") String user);
-//
-//    @GET("users/{user}/repos")
-//    Call<Object> listRepos(@Path("user") String user);
+    @FormUrlEncoded
+    @POST("/php/task_manager/v1/login")
+    Call<ResponseBody> loginCall(@Field("email") @NonNull String email,
+                                 @Field("password") @NonNull String password);
 
-
+    @FormUrlEncoded
+    @POST("/php/task_manager/v1/register")
+    Call<ResponseBody> registerCall(@Field("name") @NonNull String name,
+                                    @Field("email") @NonNull String email,
+                                    @Field("password") @NonNull String password,
+                                    @Field("mobile_no") @NonNull String mobile_no);
 
 }

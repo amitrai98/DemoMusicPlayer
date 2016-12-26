@@ -1,5 +1,6 @@
 package com.example.amitrai.demomusicplayer.backend;
 
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 
 /**
@@ -9,19 +10,16 @@ import retrofit2.Call;
 public class RequestModal {
     RequestType requestType;
     ApiName apiName;
-    Call call;
-    ApiResponseListener responseListeners;
+    Call<ResponseBody> call;
 
 
     public RequestModal(RequestType requestType,
-            ApiName apiName,
-            Call call,
-            ApiResponseListener responseListeners){
+                        ApiName apiName,
+                        Call<ResponseBody> call){
 
         this.requestType = requestType;
         this.apiName = apiName;
         this.call = call;
-        this.responseListeners = responseListeners;
     }
 
     public RequestType getRequestType() {
@@ -46,13 +44,5 @@ public class RequestModal {
 
     public void setCall(Call call) {
         this.call = call;
-    }
-
-    public ApiResponseListener getResponseListeners() {
-        return responseListeners;
-    }
-
-    public void setResponseListeners(ApiResponseListener responseListeners) {
-        this.responseListeners = responseListeners;
     }
 }

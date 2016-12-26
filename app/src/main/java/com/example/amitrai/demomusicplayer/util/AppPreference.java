@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 import com.example.amitrai.demomusicplayer.modals.Login;
+import com.example.amitrai.demomusicplayer.modals.UserAuthenticaitonModel;
 
 
 public class AppPreference {
@@ -15,8 +16,15 @@ public class AppPreference {
     private  Context _context;
     private int mPRIVATE_MODE = 0;
     static AppPreference sessionObj;
-    private final String mPREF_NAME = "SHOFUR_PREF";
-    private final String mPREF_NAMEUTILS = "SHOFUR_PREF_UTILS";
+    private final String mPREF_NAME = "DEMO_MUSIC";
+
+    private final String NAME = "name";
+    private final String EMAIL_ADDRESS = "email";
+    private  final String API_KEY = "apiKey";
+
+
+
+    private final String mPREF_NAMEUTILS = "MUSIC_PREF_UTILS";
     private static final String KEY_ACESSTOKEN = "user_id";
     private static final String KEY_USER_TYPE = "is_driver";
     private static final String KEY_USER_AVTAR = "user_image";
@@ -105,21 +113,19 @@ public class AppPreference {
         return mPref.getString(KEY_ACESSTOKEN, "");
     }
 
-    public void setUserLoginTrue(Login userLogin) {
-//        mEditor.putString(KEY_ACESSTOKEN, userLogin.getAccessToken());
-//        mEditor.putString(KEY_USER_TYPE, userLogin.getUserType());
-//        mEditor.putString(KEY_USER_AVTAR, userLogin.getAvatarUrl());
-//        mEditor.putString(KEY_USER_NAME, userLogin.getFullName());
-//        mEditor.putString(KEY_USERID, userLogin.getUserID());
-//        mEditor.putString(KEY_USER_MOBILE, userLogin.getMobile());
-//
-//        mEditor.putString(KEY_USER_EMAIL, userLogin.getEmailId());
-//        mEditor.putString(KEY_USERALREADY, userLogin.getUserAlready());
-//       // mEditor.putString(KEY_REFERRAL_CODE,userLogin.getReferralCode());
-//        mEditor.putString(KEY_REFERRAL_URL,userLogin.getReferralUrl());
-
+    public void setUserLoginTrue(UserAuthenticaitonModel userLogin) {
+        mEditor.putString(NAME, userLogin.getName());
+        mEditor.putString(EMAIL_ADDRESS, userLogin.getEmail());
+        mEditor.putString(API_KEY, userLogin.getApiKey());
         mEditor.commit();
+    }
 
+
+    private void clearUserCredentials(){
+        mEditor.putString(NAME, "");
+        mEditor.putString(EMAIL_ADDRESS, "");
+        mEditor.putString(API_KEY, "");
+        mEditor.commit();
     }
 
     public Login getLoggedInUser() {
@@ -155,7 +161,7 @@ public class AppPreference {
     }
 
     public boolean isUserLogin() {
-        if (!mPref.getString(KEY_ACESSTOKEN, "").isEmpty()) {
+        if (!mPref.getString(API_KEY, "").isEmpty()) {
             return true;
         }
         return false;

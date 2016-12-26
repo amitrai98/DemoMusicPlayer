@@ -11,11 +11,24 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 
 import com.example.amitrai.demomusicplayer.R;
+import com.example.amitrai.demomusicplayer.backend.ApiClient;
+import com.example.amitrai.demomusicplayer.backend.ApiInterface;
+import com.example.amitrai.demomusicplayer.backend.ApiName;
+import com.example.amitrai.demomusicplayer.backend.ApiRequester;
+import com.example.amitrai.demomusicplayer.backend.ApiResponseListener;
+import com.example.amitrai.demomusicplayer.backend.RequestModal;
+import com.example.amitrai.demomusicplayer.backend.RequestType;
+import com.example.amitrai.demomusicplayer.modals.UserAuthenticaitonModel;
 import com.example.amitrai.demomusicplayer.util.Utils;
+import com.google.gson.Gson;
+
+import org.json.JSONObject;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import okhttp3.ResponseBody;
+import retrofit2.Call;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -40,6 +53,8 @@ public class LoginFragment extends BaseFragment {
     EditText edt_email;
     @Bind(R.id.edt_password)
     EditText edt_password;
+
+    Call<ResponseBody> call;
 
 
 
@@ -133,6 +148,43 @@ public class LoginFragment extends BaseFragment {
             if (Utils.isValidEmail(email)){
 //                RxJavaHandler handler = new RxJavaHandler();
 //                handler.callApi();
+//                MusiLibrary musiLibrary = new MusiLibrary(getActivity().getContentResolver());
+//                ArrayList<Artist> artists = musiLibrary.getArtists();
+//                ArrayList<Song> song = musiLibrary.getArtistSongs(artists.get(0).mArtistId);
+//                Log.e(TAG, "music library found are"+song);
+
+                ApiInterface service = ApiClient.getClient().create(ApiInterface.class);
+                try {
+                    call = service.loginCall("android1@evontech.com","123456");
+                }catch (Exception exp){
+                    exp.printStackTrace();
+                }
+                RequestModal requestModal = new RequestModal(RequestType.POST, ApiName.LOGIN, call);
+
+                try {
+                    ApiRequester.request(requestModal, new ApiResponseListener() {
+                        @Override
+                        public void onApiSuccess(String response) {
+                            Log.e(TAG, "response received"+response);
+                            try {
+                                JSONObject jsonObject = new JSONObject(response);
+                                UserAuthenticaitonModel authenticaitonModel =
+                                        new Gson().fromJson(jsonObject.toString(), UserAuthenticaitonModel.class);
+                                Log.e(TAG, ""+authenticaitonModel);
+                                mPreference.setUserLoginTrue(authenticaitonModel);
+                            }catch (Exception exp){
+                                exp.printStackTrace();
+                            }
+                        }
+                        @Override
+                        public void onApiError(String error) {
+                            Log.e(TAG, "an api error occured");
+                        }
+
+                    });
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
 
             }
             else
@@ -144,6 +196,6 @@ public class LoginFragment extends BaseFragment {
     @OnClick(R.id.btn_register)
     void registerUser(){
         replaceFragment(new RegisterFragment(), true);
-
     }
+
 }

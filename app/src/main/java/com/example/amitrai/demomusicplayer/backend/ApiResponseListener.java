@@ -5,7 +5,6 @@ package com.example.amitrai.demomusicplayer.backend;
  */
 
 public interface ApiResponseListener {
-    public void onApiSuccess(ResponseModal responseModal);
+    public void onApiSuccess(String response);
     public void onApiError(String error);
-    public void onError(String errormessage);
 }

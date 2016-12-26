@@ -4,13 +4,12 @@ import android.util.Log;
 
 import com.example.amitrai.demomusicplayer.modals.Repo;
 
-import java.io.IOException;
 import java.util.List;
 
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
 import retrofit2.http.GET;
 import retrofit2.http.Path;
 
@@ -47,32 +46,28 @@ public class ApiRequester {
                 @Path("repo") String repo);
     }
 
-    public static void request(RequestModal requestModal) throws IOException {
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("https://api.github.com/")
-                .build();
+    public static void request(RequestModal requestModal, final ApiResponseListener responseListener){
 
-
-        GitHubService service = retrofit.create(GitHubService.class);
-
-        ApiInterface apiService =
-                ApiClient.getClient().create(ApiInterface.class);
-
-        Call<Object> call = apiService.listRepos("amitrai98");
-        call.enqueue(new Callback<Object>() {
-            @Override
-            public void onResponse(Call<Object> call, Response<Object> response) {
-                Object body = response.body();
-                Log.e(TAG, "response"+body);
-
-            }
-
-            @Override
-            public void onFailure(Call<Object> call, Throwable t) {
-                Log.e(TAG, "response"+t);
-            }
-        });
-
-
+        try {
+            requestModal.getCall().enqueue(new Callback<ResponseBody>() {
+                @Override
+                public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                    try {
+                        ResponseBody body = response.body();
+                        String response_string = body.string();
+                        responseListener.onApiSuccess(response_string);
+                    }catch (Exception exp){
+                        exp.printStackTrace();
+                    }
+                }
+                @Override
+                public void onFailure(Call<ResponseBody> call, Throwable t) {
+                    Log.e(TAG, "response"+t);
+                    responseListener.onApiError(t.getMessage());
+                }
+            });
+        }catch (Exception exp){
+            exp.printStackTrace();
+        }
     }
 }

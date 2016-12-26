@@ -4,14 +4,24 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.amitrai.demomusicplayer.R;
+import com.example.amitrai.demomusicplayer.backend.ApiClient;
+import com.example.amitrai.demomusicplayer.backend.ApiInterface;
+import com.example.amitrai.demomusicplayer.backend.ApiName;
+import com.example.amitrai.demomusicplayer.backend.ApiRequester;
+import com.example.amitrai.demomusicplayer.backend.ApiResponseListener;
+import com.example.amitrai.demomusicplayer.backend.RequestModal;
+import com.example.amitrai.demomusicplayer.backend.RequestType;
 
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import okhttp3.ResponseBody;
+import retrofit2.Call;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -30,6 +40,7 @@ public class RegisterFragment extends BaseFragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+    private String TAG = getClass().getSimpleName();
 
     public RegisterFragment() {
         // Required empty public constructor
@@ -69,7 +80,7 @@ public class RegisterFragment extends BaseFragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
          View view = inflater.inflate(R.layout.fragment_register, container, false);
-        ButterKnife.bind(this, view);
+        ButterKnife.bind(getContext(), view);
 
         return view;
     }
@@ -122,5 +133,29 @@ public class RegisterFragment extends BaseFragment {
     @OnClick(R.id.btn_login)
     void openLoginFragment(){
         replaceFragment(new LoginFragment(), true);
+    }
+
+
+    @OnClick(R.id.btn_register)
+    void registerUser(){
+        ApiInterface service = ApiClient.getClient().create(ApiInterface.class);
+        try {
+            Call<ResponseBody> call = service.registerCall("user3","android3@evontech.com", "123456",
+                    "asdf");
+            RequestModal modal = new RequestModal(RequestType.POST, ApiName.REGISTER, call);
+            ApiRequester.request(modal, new ApiResponseListener() {
+                @Override
+                public void onApiSuccess(String response) {
+                    Log.e(TAG, response);
+                }
+
+                @Override
+                public void onApiError(String error) {
+                    Log.e(TAG, error);
+                }
+            });
+        }catch (Exception exp){
+            exp.printStackTrace();
+        }
     }
 }

@@ -1,19 +1,32 @@
 package com.example.amitrai.demomusicplayer.ui.activity;
 
+import android.Manifest;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.Snackbar;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 import com.example.amitrai.demomusicplayer.R;
 import com.example.amitrai.demomusicplayer.ui.fragment.LoginFragment;
 
 public class HomeActivity extends BaseActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+
+    private static final int REQUEST_PERMISSIONS = 101;
+    private String TAG = getClass().getSimpleName();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,6 +106,8 @@ public class HomeActivity extends BaseActivity
 
 
     private void init(){
+
+        getReadPermission();
 //        try {
             replaceFragment(new LoginFragment(), true);
 //            ApiRequester.callApi();
@@ -100,4 +115,69 @@ public class HomeActivity extends BaseActivity
 //            e.printStackTrace();
 //        }
     }
+
+
+    void getReadPermission(){
+        if (ContextCompat.checkSelfPermission(HomeActivity.this,
+                Manifest.permission.READ_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED) {
+            if (ActivityCompat.shouldShowRequestPermissionRationale
+                    (HomeActivity.this, Manifest.permission.READ_EXTERNAL_STORAGE)) {
+                Snackbar.make(findViewById(android.R.id.content),
+                        "Please Grant Permissions",
+                        Snackbar.LENGTH_INDEFINITE).setAction("ENABLE",
+                        new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                ActivityCompat.requestPermissions(HomeActivity.this,
+                                        new String[]{Manifest.permission
+                                                .READ_EXTERNAL_STORAGE},
+                                        REQUEST_PERMISSIONS);
+                            }
+                        }).show();
+            } else {
+                ActivityCompat.requestPermissions(HomeActivity.this,
+                        new String[]{Manifest.permission
+                                .READ_EXTERNAL_STORAGE},
+                        REQUEST_PERMISSIONS);
+            }
+        }
+    }
+
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           String permissions[],
+                                           int[] grantResults) {
+        switch (requestCode) {
+            case 101: {
+                if ((grantResults.length > 0) && (grantResults[0]) == PackageManager.PERMISSION_GRANTED) {
+                    //Call whatever you want
+                    try {
+                        Log.e(TAG, "permission received");
+                    }catch (Exception exp){
+                        exp.printStackTrace();
+                    }
+                } else {
+                    Snackbar.make(findViewById(android.R.id.content), "Enable Permissions from settings",
+                            Snackbar.LENGTH_INDEFINITE).setAction("ENABLE",
+                            new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    Intent intent = new Intent();
+                                    intent.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                                    intent.addCategory(Intent.CATEGORY_DEFAULT);
+                                    intent.setData(Uri.parse("package:" + getPackageName()));
+                                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                    intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+                                    intent.addFlags(Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS);
+                                    startActivity(intent);
+                                }
+                            }).show();
+                }
+                return;
+            }
+        }
+    }
+
 }
